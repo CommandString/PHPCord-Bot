@@ -1,0 +1,52 @@
+{
+  "name": "commandstring/cmdovl",
+  "description": "Commander_Overlord Discord Bot (using PHPCord)",
+  "license": "MIT",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Robert Snedeker",
+      "email": "rsnedeker20@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "commandstring/utils": "^1.7",
+    "monolog/monolog": "^3.4",
+    "phpcord/phpcord": "dev-main"
+  },
+  "require-dev": {
+    "ergebnis/composer-normalize": "^2.31",
+    "fakerphp/faker": "^1.21",
+    "friendsofphp/php-cs-fixer": "^3.16",
+    "jetbrains/phpstorm-attributes": "^1.0",
+    "roave/security-advisories": "dev-latest"
+  },
+  "minimum-stability": "beta",
+  "autoload": {
+    "psr-4": {
+      "Bot\\": "Bot/",
+      "Core\\": "Core/"
+    },
+    "files": [
+      "Core/functions.php"
+    ]
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    },
+    "sort-packages": true
+  },
+  "extra": {
+    "composer-normalize": {
+      "indent-size": 2,
+      "indent-style": "space"
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": "composer normalize",
+    "fix": "php-cs-fixer fix --using-cache=no",
+    "fix:dry": "php-cs-fixer fix --using-cache=no --diff --dry-run"
+  }
+}
