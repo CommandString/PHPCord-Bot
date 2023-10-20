@@ -37,33 +37,35 @@ class ViewProfile implements GuildCommand
             return;
         }
 
-        /** @var Member|null $user */
-        $member = $interaction->data->resolved->users[$resolvedUser] ?? null;
+        $user = $member = null;
 
-        if ($member === null) {
-            /** @var User|null $user */
-            $user = $interaction->data->resolved->users[$resolvedUser] ?? null;
-        }
+        /** @var Member|null $user */
+        $member = $interaction->data->resolved->members[$resolvedMember] ?? null;
+
+        /** @var User|null $user */
+        $user = $interaction->data->resolved->users[$resolvedUser] ?? null;
 
         if ($user === null && $member === null) {
             $failed();
             return;
         }
 
-        if ($user instanceof Member) {
-            $member = $user;
-            $user = $user->user;
+        $profile = (new EmbedBuilder());
 
-            $profile = (new EmbedBuilder())
-                ->withField('Nickname', $member->nick ?? 'None', true);
+        if ($member instanceof Member) {
+            $profile->withField('Nickname', $member->nick ?? 'None', true);
         } else {
             $profile = (new EmbedBuilder());
         }
+
+        var_dump($user);
 
         $profile
             ->withTitle($user->globalName ?? "{$user->username}#{$user->discriminator}")
             ->withField('Joined Discord', '<t:' . $user->id->getTime() . ':R>', true)
         ;
+
+        $response->data->embeds = [$profile->build()];
 
         $responder->createResponse($response)->done();
     }

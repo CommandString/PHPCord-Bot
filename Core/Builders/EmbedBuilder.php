@@ -16,36 +16,59 @@ class EmbedBuilder implements BuilderInterface
         $this->embed = new Embed();
     }
 
+    private function set(string $name, mixed $value): self
+    {
+        $this->embed->$name = $value;
+
+        return $this;
+    }
+
     public function withTitle(string $title): self
     {
-        $this->embed->title = $title;
+        return $this->set('title', $title);
+    }
+
+    public function withThumbnail(string $url): self
+    {
+        return $this->set('thumbnail', $url);
+    }
+
+    public function withAuthor(string $name, ?string $iconUrl = null, ?string $proxyIconUrl = null): self
+    {
+        $author = new EmbedAuthor();
+        $author->name = $name;
+        $author->iconUrl = $iconUrl;
+        $author->proxyIconUrl = $proxyIconUrl;
+
+        $this->embed->author = $author;
 
         return $this;
     }
 
     public function withDescription(string $description): self
     {
-        $this->embed->description = $description;
-
-        return $this;
+        return $this->set('description', $description);
     }
 
     public function withColor(int $color): self
     {
-        $this->embed->color = $color;
+        return $this->set('color', $color);
+    }
 
-        return $this;
+    public function withTimestamp(int $timestamp): self
+    {
+        return $this->set('timestamp', $timestamp);
     }
 
     public function withField(string $name, string $value, ?bool $inline = null): self
     {
-        $field = new EmbedField();
+        $this->embed->fields = [...$this->embed->fields ?? [], ($field = new EmbedField())];
 
         $field->name = $name;
         $field->value = $value;
         $field->inline = $inline;
 
-        $this->embed->fields[] = $field;
+        var_dump($field);
 
         return $this;
     }
@@ -66,6 +89,4 @@ class EmbedBuilder implements BuilderInterface
     {
         return clone $this->embed;
     }
-
-    // TODO: Finish Embed Builder
 }
